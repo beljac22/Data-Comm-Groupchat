@@ -7,7 +7,11 @@ import webbrowser
 
 URL_COUNTER = 0
 URL_REGEX = r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)'
-
+EMOJIS = {
+    ":thumbsup:": u'\U0001F44d',
+    ":smile:": u'\U0001F600',
+    ":laugh:": u'\U0001F602'
+}
 
 
 USERNAME = None
@@ -21,6 +25,8 @@ def receive_messages():
             message = client_socket.recv(1024).decode()
             if not message:
                 break
+            for emoji in EMOJIS.keys():
+                message = message.replace(emoji,EMOJIS[emoji])
             print(f"[DEBUG] Received message: {message}")  # Debug print
             chat_display.configure(state='normal')
             chat_display.insert(tk.END, message + "\n")
